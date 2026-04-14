@@ -21,12 +21,7 @@ export const profileConfig: ProfileConfig = {
 	// `pnpm add @iconify-json/<icon-set-name>`
 	// showName: true 时显示图标和名称，false 时只显示图标
 	links: [
-		// {
-		// 	name: "qq",
-		// 	icon: "fa7-brands:qq",
-		// 	url: "https://qm.qq.com/q/ZGsFa8qX2G",
-		// 	showName: false,
-		// },
+
 		{
 			name: "GitHub",
 			icon: "fa7-brands:github",
