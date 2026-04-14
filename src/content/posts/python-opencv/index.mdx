@@ -8,28 +8,44 @@ category: 项目
 draft: false
 ---
 
-## 一、依赖安装
+import { Image } from "astro:assets";
+import img01 from "./images/01-original.jpeg";
+import img02 from "./images/02-hsv.png";
+import img03 from "./images/03-median.png";
+import img04 from "./images/04-rotate.png";
+import img05 from "./images/05-cut1.png";
+import img06 from "./images/06-cut2.png";
+import img07 from "./images/07-replace.png";
+
+## 一、项目概述
+
+手写藏文字母识别是一项具有民族特色的任务，藏文字母笔画复杂、书写风格多样，目前没有相关公开数据集。本项目是藏文字母识别系统的图像预处理模块，负责将志愿者手写并扫描的表格型文字图像自动处理为可供模型训练的单字母图像。
+
+表格采用红色框线划分格子，每个格子内手写一个藏文字母。图像预处理需要完成以下工作：提取红色框线定位表格区域、矫正扫描时产生的倾斜偏差、按格子裁剪并批量保存各字母图像，最终消除残余的红色噪声。
+
+**项目构成：**
+
+- `main.py`：主流程，读取扫描图像，依次执行颜色提取、滤波、直线检测、轮廓定位、旋转矫正、裁剪保存
+- `replace.py`：后处理，逐像素替换残余红色框线为白色背景
+
+**项目地址：** [Handwritten Tibetan Letters](https://gitee.com/handwritten_tibetan_letters/Handwritten_Tibetan_letters/tree/master/image_processing)
+
+## 二、依赖安装
 
 ```bash
 pip install numpy opencv-python pillow
 ```
 
-## 二、项目说明
-
-本项目源于手写藏文字母识别任务，需要对扫描的手写表格图像进行预处理，自动提取表格中每个格子内的字母并保存。项目由两个文件构成：
-
-- `main.py`：读取文件夹下的图像，完成提取、裁剪并保存
-- `replace.py`：消除图像中多余的红色框线
-
-项目地址：[Handwritten Tibetan Letters](https://gitee.com/handwritten_tibetan_letters/Handwritten_Tibetan_letters/tree/master/image_processing)
-
 ## 三、图像处理流程
 
 原始图像如下，为带有红色格线的手写表格：
 
-<div align="center">
-  <img src="./images/01-original.jpeg" width="250" height="300" alt="原始图像" />
-</div>
+<Image
+	src={img01}
+	alt="原始图像"
+	width={380}
+	style={{ display: "block", margin: "1.2rem auto", borderRadius: "8px" }}
+/>
 
 ---
 
@@ -41,11 +57,11 @@ pip install numpy opencv-python pillow
 
 **函数说明：`cv2.inRange(hsv, lowerb, upperb)`**
 
-| 参数 | 说明 |
-|------|------|
-| `hsv` | 输入图像，需先转换为 HSV 格式 |
-| `lowerb` | H、S、V 分量的最低值 |
-| `upperb` | H、S、V 分量的最高值 |
+| 参数     | 说明                          |
+| -------- | ----------------------------- |
+| `hsv`    | 输入图像，需先转换为 HSV 格式 |
+| `lowerb` | H、S、V 分量的最低值          |
+| `upperb` | H、S、V 分量的最高值          |
 
 ```python
 hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  # 转换为 HSV 色彩空间
@@ -56,9 +72,12 @@ mask = cv2.inRange(hsv, lowerb=lower_hsv, upperb=high_hsv)
 
 提取效果：
 
-<div align="center">
-  <img src="./images/02-hsv.png" width="250" height="300" alt="HSV 颜色提取结果" />
-</div>
+<Image
+	src={img02}
+	alt="HSV 颜色提取结果"
+	width={380}
+	style={{ display: "block", margin: "1.2rem auto", borderRadius: "8px" }}
+/>
 
 ---
 
@@ -68,9 +87,9 @@ mask = cv2.inRange(hsv, lowerb=lower_hsv, upperb=high_hsv)
 
 **函数说明：`cv2.medianBlur(img, ksize)`**
 
-| 参数 | 说明 |
-|------|------|
-| `img` | 输入图像 |
+| 参数    | 说明                                              |
+| ------- | ------------------------------------------------- |
+| `img`   | 输入图像                                          |
 | `ksize` | 滤波核大小，必须为大于 1 的奇数（如 3、5、7、19） |
 
 ```python
@@ -79,9 +98,12 @@ mediu = cv2.medianBlur(img, 19)
 
 滤波效果：
 
-<div align="center">
-  <img src="./images/03-median.png" width="250" height="300" alt="中值滤波结果" />
-</div>
+<Image
+	src={img03}
+	alt="中值滤波结果"
+	width={380}
+	style={{ display: "block", margin: "1.2rem auto", borderRadius: "8px" }}
+/>
 
 ---
 
@@ -91,21 +113,21 @@ mediu = cv2.medianBlur(img, 19)
 
 **`cv2.Canny(img, threshold1, threshold2)`**
 
-| 参数 | 说明 |
-|------|------|
+| 参数         | 说明                     |
+| ------------ | ------------------------ |
 | `threshold1` | 低阈值，用于连接间断边缘 |
 | `threshold2` | 高阈值，用于检测明显边缘 |
 
 **`cv2.HoughLinesP(img, rho, theta, threshold, lines, minLineLength, maxLineGap)`**
 
-| 参数 | 说明 |
-|------|------|
-| `img` | 输入图像，须为 Canny 边缘检测后的二值图 |
-| `rho` | 直线半径精度，建议设为 1 |
-| `theta` | 角度步长，通常为 `np.pi / 180` |
-| `threshold` | 累加器阈值 |
-| `minLineLength` | 最短直线长度，短于此值的直线被忽略 |
-| `maxLineGap` | 同一直线上点的最大间隔，超过则视为两条线 |
+| 参数            | 说明                                     |
+| --------------- | ---------------------------------------- |
+| `img`           | 输入图像，须为 Canny 边缘检测后的二值图  |
+| `rho`           | 直线半径精度，建议设为 1                 |
+| `theta`         | 角度步长，通常为 `np.pi / 180`           |
+| `threshold`     | 累加器阈值                               |
+| `minLineLength` | 最短直线长度，短于此值的直线被忽略       |
+| `maxLineGap`    | 同一直线上点的最大间隔，超过则视为两条线 |
 
 ```python
 img_canny = cv2.Canny(img, 20, 250)
@@ -126,14 +148,14 @@ for x1, y1, x2, y2 in lines1:
 
 **`cv2.findContours(img, mode, method)`**
 
-| 参数 | 可选值 | 说明 |
-|------|--------|------|
-| `mode` | `cv2.RETR_EXTERNAL` | 只检测最外层轮廓 |
-| | `cv2.RETR_LIST` | 检测所有轮廓，不建立层级关系 |
-| | `cv2.RETR_CCOMP` | 建立两层轮廓（外边界 + 内孔） |
-| | `cv2.RETR_TREE` | 建立完整层级树 |
-| `method` | `cv2.CHAIN_APPROX_NONE` | 存储所有轮廓点 |
-| | `cv2.CHAIN_APPROX_SIMPLE` | 只保留方向端点，压缩冗余点 |
+| 参数     | 可选值                    | 说明                          |
+| -------- | ------------------------- | ----------------------------- |
+| `mode`   | `cv2.RETR_EXTERNAL`       | 只检测最外层轮廓              |
+|          | `cv2.RETR_LIST`           | 检测所有轮廓，不建立层级关系  |
+|          | `cv2.RETR_CCOMP`          | 建立两层轮廓（外边界 + 内孔） |
+|          | `cv2.RETR_TREE`           | 建立完整层级树                |
+| `method` | `cv2.CHAIN_APPROX_NONE`   | 存储所有轮廓点                |
+|          | `cv2.CHAIN_APPROX_SIMPLE` | 只保留方向端点，压缩冗余点    |
 
 ```python
 image, contours, hier = cv2.findContours(
@@ -167,18 +189,18 @@ for c in contours:
 
 **`cv2.getRotationMatrix2D(center, angle, scale)`**
 
-| 参数 | 说明 |
-|------|------|
+| 参数     | 说明                       |
+| -------- | -------------------------- |
 | `center` | 旋转基点（通常为图像中心） |
-| `angle` | 旋转角度 |
-| `scale` | 缩放因子，1 表示不缩放 |
+| `angle`  | 旋转角度                   |
+| `scale`  | 缩放因子，1 表示不缩放     |
 
 **`cv2.warpAffine(img, M, dsize)`**
 
-| 参数 | 说明 |
-|------|------|
-| `M` | 由 `getRotationMatrix2D` 得到的变换矩阵 |
-| `dsize` | 输出图像尺寸 `(width, height)` |
+| 参数    | 说明                                    |
+| ------- | --------------------------------------- |
+| `M`     | 由 `getRotationMatrix2D` 得到的变换矩阵 |
+| `dsize` | 输出图像尺寸 `(width, height)`          |
 
 ```python
 (h, w) = img.shape[:2]
@@ -189,19 +211,25 @@ rotated = cv2.warpAffine(img, M, (w, h))
 
 矫正效果：
 
-<div align="center">
-  <img src="./images/04-rotate.png" width="250" height="300" alt="旋转矫正结果" />
-</div>
+<Image
+	src={img04}
+	alt="旋转矫正结果"
+	width={380}
+	style={{ display: "block", margin: "1.2rem auto", borderRadius: "8px" }}
+/>
 
 ---
 
 ### 6. 图像裁剪
 
-**沿外层矩形框裁剪：**
+沿外层矩形框裁剪：
 
-<div align="center">
-  <img src="./images/05-cut1.png" width="250" height="300" alt="沿边框裁剪" />
-</div>
+<Image
+	src={img05}
+	alt="沿边框裁剪"
+	width={380}
+	style={{ display: "block", margin: "1.2rem auto", borderRadius: "8px" }}
+/>
 
 ```python
 # 利用轮廓坐标裁剪
@@ -210,7 +238,7 @@ x2, y2 = box[3]
 img_cut = img[y1 + 10:y2 - 10, x1 + 10:x2 - 10]
 ```
 
-**按格子裁剪并批量保存：**
+按格子裁剪并批量保存：
 
 ```python
 # 数组切片裁剪（需用 cv2.imread 加载图像）
@@ -219,9 +247,12 @@ img[y1:y2, x1:x2]
 
 裁剪效果：
 
-<div align="center">
-  <img src="./images/06-cut2.png" width="250" height="300" alt="按格子裁剪结果" />
-</div>
+<Image
+	src={img06}
+	alt="按格子裁剪结果"
+	width={380}
+	style={{ display: "block", margin: "1.2rem auto", borderRadius: "8px" }}
+/>
 
 ---
 
@@ -249,15 +280,18 @@ img2.save(path)
 
 处理效果：
 
-<div align="center">
-  <img src="./images/07-replace.png" width="250" height="300" alt="消除多余框线结果" />
-</div>
+<Image
+	src={img07}
+	alt="消除多余框线结果"
+	width={380}
+	style={{ display: "block", margin: "1.2rem auto", borderRadius: "8px" }}
+/>
 
 ---
 
 ## 四、完整代码
 
-### main.py
+### 1. main.py
 
 ```python
 import cv2
@@ -395,7 +429,7 @@ if __name__ == "__main__":
             cv2.destroyAllWindows()
 ```
 
-### replace.py
+### 2. replace.py
 
 ```python
 from PIL import Image
