@@ -1,0 +1,186 @@
+---
+title: 藏文手写数字与字母数据集 TibetanCharacter
+published: 2026-04-15
+description: 介绍两个开源藏文手写图像数据集：TibetanMNIST（17768 张手写数字）与藏文手写字母数据集（77636 张字母图像），涵盖数据背景、格式说明、分布统计及使用示例。
+image: /assets/images/covers/python-opencv.svg
+tags: [数据集, 藏文, 深度学习, 图像识别]
+category: 项目
+draft: false
+---
+
+## 一、项目概述
+
+本文介绍两个专为藏文手写体识别任务构建的开源数据集：
+
+- **TibetanMNIST**：藏文手写数字数据集，共 **17768** 张图像，涵盖藏文 0–9 共 10 个数字类别
+- **藏文手写字母数据集**：共 **77636** 张藏文字母图像，覆盖多个常用藏文字母
+
+两个数据集均由中央民族大学创业团队**巨神人工智能科技**制作，是目前为数不多的藏文手写体公开数据集，填补了该领域数据空白，可直接用于分类、识别等机器学习任务。
+
+**数据下载：**
+
+> 百度网盘：[TibetanCharacter](https://pan.baidu.com/s/1TnM9Rxue9ae0bhPJ2EUP8g?pwd=4ata)　提取码：`4ata`
+
+**项目代码（藏文字母识别）：** [Handwritten Tibetan Letters](https://gitee.com/handwritten_tibetan_letters/Handwritten_Tibetan_letters.git)
+
+---
+
+## 二、背景与起源
+
+MNIST 数据集是机器学习领域里程碑式的存在——来自美国国家标准与技术研究所（NIST），由 250 位不同书写者采集而成，其中一半为高中生，另一半为人口普查局工作人员。自建立以来，它被广泛用于检验各类机器学习算法，为该领域发展贡献卓著，当之无愧是历史上最具影响力的数据集之一。
+
+TibetanMNIST 的诞生源于一次偶然的发现。在一次科研会议上，团队成员无意间看到一位藏族同学笔记本上写着的奇特符号，追问之下才知晓那正是藏文数字——一套与阿拉伯数字并列使用、笔画简洁、语义独立的文字体系。这个发现随即激发了一个想法：**能不能让计算机识别这些数字？**
+
+这一想法很快获得团队一致认可。由于对藏文本身并不熟悉，前期工作相当艰难，直至获得藏学研究院同学的深入协助，才得以顺利推进。历时一个月，经过超过 300 次反复筛选，最终形成了拥有 17768 张高清图像的 **TibetanMNIST** 数据集——这不仅是团队亲手制作的第一个数据集，更是全球第一个藏文手写数字图像数据集。
+
+在此基础上，团队进一步扩展，制作了涵盖多个藏文字母的手写字母数据集，由本校 150 名藏族大学生参与书写，最终收录有效样本 **77636** 例，为藏文手写体识别研究提供了更完整的数据支撑。
+
+---
+
+## 三、TibetanMNIST 数字数据集
+
+### 3.1 藏文数字对照表
+
+藏文数字与阿拉伯数字一一对应，是藏文中独立存在的数字体系：
+
+| 阿拉伯数字 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 藏文数字 | ༠ | ༡ | ༢ | ༣ | ༤ | ༥ | ༦ | ༧ | ༨ | ༩ |
+
+### 3.2 数据特征
+
+| 数据集名称 | 数据类型 | 原始图像尺寸 | TFRecords 尺寸 | 通道数 | 位深度 | 实例数 | 相关任务 |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| TibetanMNIST | 图像数据 | 350×350 | 28×28 | 单通道 | 8 bit | 17768 | 分类 |
+
+### 3.3 类别分布
+
+| 类别 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 合计 |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 数量 | 1996 | 2134 | 1872 | 1816 | 1967 | 1350 | 1618 | 1302 | 1642 | 2071 | **17768** |
+
+### 3.4 数据示例
+
+![TibetanMNIST 数据示例](https://cdn.kesci.com/upload/image/pitugp1jc1.JPG?imageView2/0/w/640/h/640)
+
+### 3.5 文件说明
+
+数据集包含以下三种格式文件：
+
+| 文件名 | 格式 | 说明 |
+|:---|:---:|:---|
+| `TibetanMNIST.tfrecords` | TFRecords | 每张图像存储为 28×28×3 三通道矩阵 |
+| `TibetanMNIST.npz` | NPZ | 每张图像存储为 28×28 单通道矩阵 |
+| `TibetanMNIST.zip` | ZIP | 原始图像文件，未做缩放处理 |
+
+> **原始图像文件命名规则：** 第一段数字为类别标签，第二段为纸张编号，第三段为该纸张内的图像序号。
+
+---
+
+## 四、藏文手写字母数据集
+
+### 4.1 数据采集
+
+采集时统一制定了书写规范，以降低个体差异对数据质量的影响。书写载体为如下方格纸（8 行 × 12 列），书写者在格子内书写单个字母：
+
+![采集用方格纸](https://cdn.kesci.com/upload/image/q9u89dx9ji.jpg?imageView2/0/w/640/h/640)
+
+共采集原始样本约 100000 例，经人工逐一核查，删除无效样本后，保留有效数据 **77636** 例，由中央民族大学 150 名藏族大学生书写完成。
+
+### 4.2 类别分布
+
+每个字母约有 2000 余个样本，各类别分布相对均衡：
+
+![字母类别分布图](https://cdn.kesci.com/upload/image/q9u89zm1yx.png?imageView2/0/w/640/h/640)
+
+### 4.3 数据示例
+
+![字母数据集样例](https://cdn.kesci.com/upload/image/q9u8chwc94.png?imageView2/0/w/960/h/960)
+
+### 4.4 图像预处理流程
+
+对原始采集图像依次执行以下操作，最终统一输出标准尺寸的单字母图像：
+
+```
+原始扫描图像
+  ↓ HSV 颜色提取（分离红色格线）
+  ↓ 中值滤波（去除噪声线条）
+  ↓ 轮廓检测（定位字母区域）
+  ↓ 字母提取（裁剪单个字母）
+  ↓ 统一尺寸（归一化图像大小）
+最终输出：标准化字母图像
+```
+
+---
+
+## 五、数据使用示例
+
+### 5.1 NPZ 文件读取
+
+```python
+import numpy as np
+from keras import utils
+
+data = np.load('TibetanMNIST.npz')
+x_train = data['image'].reshape(17768, 784)
+y_train = utils.to_categorical(data['label'], 10)
+```
+
+### 5.2 TFRecords 文件读取
+
+```python
+import tensorflow as tf
+
+def _parse_function(example_proto):
+    features = {
+        'label':   tf.FixedLenFeature([], tf.int64),
+        'img_raw': tf.FixedLenFeature([], tf.string)
+    }
+    parsed = tf.parse_single_example(example_proto, features)
+    img    = tf.decode_raw(parsed['img_raw'], tf.uint8)
+    img    = tf.reshape(img, [28, 28, 3])
+    img    = tf.cast(img, tf.float32) / 255
+    label  = tf.cast(parsed['label'], tf.int32)
+    return img, label
+
+dataset  = tf.data.TFRecordDataset(['TibetanMNIST.tfrecords'])
+dataset  = dataset.map(_parse_function)
+iterator = dataset.make_one_shot_iterator()
+image, label = iterator.get_next()
+```
+
+### 5.3 BP 网络训练示例
+
+以下为使用 Keras 构建 BP 网络并在 TibetanMNIST 上训练的完整示例，训练 10 个 epoch 后精度可稳定在 **94%** 左右：
+
+```python
+from tensorflow import keras
+from keras import utils
+import numpy as np
+
+data    = np.load('TibetanMNIST.npz')
+x_train = data['image'].reshape(17768, 784)
+y_train = utils.to_categorical(data['label'], 10)
+
+model = keras.Sequential([
+    keras.layers.Dense(784, input_dim=784, kernel_initializer='normal', activation='tanh'),
+    keras.layers.Dense(512, kernel_initializer='normal', activation='tanh'),
+    keras.layers.Dense(512, kernel_initializer='normal', activation='tanh'),
+    keras.layers.Dense(10,  kernel_initializer='normal', activation='softmax'),
+])
+
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=10, batch_size=200, verbose=1)
+```
+
+网络结构可视化：
+
+![BP 网络结构](https://cdn.kesci.com/upload/image/piw2ylt96x.png?imageView2/0/w/640/h/640)
+
+---
+
+## 六、引用
+
+如需在研究中使用上述数据集，请引用以下论文：
+
+> 周毛克, 才让先木, 龙从军, 等. 基于卷积神经网络的藏文手写数字和字母识别研究[J]. 青海师范大学学报（自然科学版）, 2019, 35(04): 34-39. DOI: [10.16229/j.cnki.issn1001-7542.2019.04.006](https://kns.cnki.net/kcms2/article/abstract?v=a2GKbg6fW_YoD0GgESbyJUz-Z-jDNxb24euyFQB_W6HAgUKGODwYvFjMWYy09PE0DhTum-_o-llOzymHXvvERW3h-KQNhXwpYn4_lP91efY5K-9FShHhVw8hPjmmZ-KR-NaorhhCFcDOp5Tsz3Vwqw==&uniplatform=NZKPT&language=CHS)
