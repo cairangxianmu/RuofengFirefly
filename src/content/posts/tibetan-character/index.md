@@ -39,10 +39,8 @@ draft: true
 **相关链接**
 
 > 项目代码（字母识别）：[Handwritten Tibetan Letters](https://gitee.com/handwritten_tibetan_letters/Handwritten_Tibetan_letters.git)
->
-> 引用论文：周毛克,才让先木,龙从军,等.基于卷积神经网络的藏文手写数字和字母识别研究[J].青海师范大学学报(自然科学版),2019,35(04):34-39.DOI:10.16229/j.cnki.issn1001-7542.2019.04.006.
 
-[论文下载](https://kns.cnki.net/kcms2/article/abstract?v=5e51ekeyRJaQOYl7j7lbvAoJaaZbp3bVpeAefSy3xCTkyJp0dDAv34BxYkh80a7URLh8Pr8yVBpoXarZUg5VuGHe9rtjGJTLTCegU7qnLTmexgMTDAZy8Dmoi0BRAk90Sm4sidzm49Cf0jQskF7MQJvGm5f25sthvLlchn7b0m0=&uniplatform=NZKPT)　·　DOI: 10.16229/j.cnki.issn1001-7542.2019.04.006
+> 论文原文：[论文下载](https://kns.cnki.net/kcms2/article/abstract?v=5e51ekeyRJaQOYl7j7lbvAoJaaZbp3bVpeAefSy3xCTkyJp0dDAv34BxYkh80a7URLh8Pr8yVBpoXarZUg5VuGHe9rtjGJTLTCegU7qnLTmexgMTDAZy8Dmoi0BRAk90Sm4sidzm49Cf0jQskF7MQJvGm5f25sthvLlchn7b0m0=&uniplatform=NZKPT)
 
 ## 二、背景与起源
 
