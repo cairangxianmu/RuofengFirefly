@@ -44,8 +44,6 @@ draft: true
 
 [论文下载](https://kns.cnki.net/kcms2/article/abstract?v=5e51ekeyRJaQOYl7j7lbvAoJaaZbp3bVpeAefSy3xCTkyJp0dDAv34BxYkh80a7URLh8Pr8yVBpoXarZUg5VuGHe9rtjGJTLTCegU7qnLTmexgMTDAZy8Dmoi0BRAk90Sm4sidzm49Cf0jQskF7MQJvGm5f25sthvLlchn7b0m0=&uniplatform=NZKPT)　·　DOI: 10.16229/j.cnki.issn1001-7542.2019.04.006
 
----
-
 ## 二、背景与起源
 
 MNIST 数据集是机器学习领域的里程碑——由美国国家标准与技术研究所（NIST）发起，收录了 250 位书写者的手写数字，自发布以来被广泛用于检验各类算法，推动了机器学习领域的长足发展，当之无愧是历史上最具影响力的数据集之一。
@@ -53,8 +51,6 @@ MNIST 数据集是机器学习领域的里程碑——由美国国家标准与�
 TibetanMNIST 基于 MNIST 格式制作，图像大小一致，可直接套用 MNIST 数据集的模型进行训练。该数据集由本校藏族同学参与书写，最终整理出 17768 张高清图像，形成了 **TibetanMNIST**——据我们所知，这是全球第一个公开的藏文手写数字图像数据集。
 
 在此基础上，团队进一步扩展，由本校 150 名藏族大学生参与书写，制作了涵盖 30 个藏文辅音字母的 **TibetanLetter** 数据集，为藏文手写体识别研究提供了更完整的数据支撑。
-
----
 
 ## 三、TibetanMNIST 数字数据集
 
@@ -85,8 +81,6 @@ TibetanMNIST 基于 MNIST 格式制作，图像大小一致，可直接套用 MN
 ![TibetanMNIST 数据示例](./images/digit-samples.jpg)
 
 > **原始图像命名规则：** `{类别标签}_{纸张编号}_{纸张内序号}.png`，例如 `3_12_05.png` 表示数字 3、第 12 张纸、第 5 个样本。
-
----
 
 ## 四、TibetanLetter 字母数据集
 
@@ -127,8 +121,6 @@ TibetanMNIST 基于 MNIST 格式制作，图像大小一致，可直接套用 MN
 ```
 
 具体实现细节见：[Python + OpenCV 图像处理实战](/posts/python-opencv/)
-
----
 
 ## 五、引用
 
