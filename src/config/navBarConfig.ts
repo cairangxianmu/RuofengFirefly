@@ -22,6 +22,13 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			name: "项目",
 			url: "/archive/?category=%E9%A1%B9%E7%9B%AE",
 			icon: "material-symbols:rocket-launch",
+			children: [
+				{
+					name: "藏文字符识别系统",
+					url: "https://cairangxianmu-tibetan-hwr.hf.space",
+					external: true,
+				},
+			],
 		},
 	];
 

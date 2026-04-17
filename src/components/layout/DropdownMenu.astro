@@ -40,18 +40,27 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 
 <div class:list={["dropdown-container", className]} data-dropdown>
 	{hasChildren ? (
-		<button 
-			class="btn-plain scale-animation rounded-lg h-10 font-bold px-4 pr-8 active:scale-95 dropdown-trigger relative"
-			aria-expanded="false"
-			aria-haspopup="true"
-			data-dropdown-trigger
-		>
-			<div class="flex items-center gap-1.5">
-				{processedLink.icon && <Icon name={processedLink.icon} class="text-[1.1rem] mr-1.5 navbar-icon" />}
-				{processedLink.name}
-			</div>
-			<Icon name="material-symbols:keyboard-arrow-down-rounded" class="text-[1.2rem] transition-transform duration-200 dropdown-arrow absolute right-2.5 top-1/2 -translate-y-1/2" />
-		</button>
+		<div class="flex items-center dropdown-trigger-wrap">
+			<a
+				aria-label={processedLink.name}
+				href={processedLink.external ? processedLink.url : url(processedLink.url)}
+				target={processedLink.external ? "_blank" : null}
+				class="btn-plain scale-animation rounded-lg h-10 font-bold px-4 active:scale-95"
+			>
+				<div class="flex items-center gap-1.5">
+					{processedLink.icon && <Icon name={processedLink.icon} class="text-[1.1rem] mr-1.5 navbar-icon" />}
+					{processedLink.name}
+				</div>
+			</a>
+			<button
+				class="btn-plain scale-animation rounded-lg h-10 w-7 active:scale-95 dropdown-trigger relative"
+				aria-expanded="false"
+				aria-haspopup="true"
+				data-dropdown-trigger
+			>
+				<Icon name="material-symbols:keyboard-arrow-down-rounded" class="text-[1.2rem] transition-transform duration-200 dropdown-arrow" />
+			</button>
+		</div>
 		<div class="dropdown-menu" data-dropdown-menu>
 			<DropdownPanel class="dropdown-content">
 				{processedLink.children?.map((child, index) => (
@@ -103,7 +112,8 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	}
 
 	.dropdown-container:hover .dropdown-arrow,
-	.dropdown-container:focus-within .dropdown-arrow {
+	.dropdown-container:focus-within .dropdown-arrow,
+	.dropdown-trigger[aria-expanded="true"] .dropdown-arrow {
 		@apply rotate-180;
 	}
 
