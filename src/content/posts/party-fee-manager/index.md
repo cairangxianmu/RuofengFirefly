@@ -2,15 +2,8 @@
 title: 用微信小程序 + Flask 做一个党费管理系统
 published: 2026-04-16
 description: 从"每次收党费都得挨个发消息追"到"党员自己打开微信就缴了"，基于微信小程序 + Flask + SQLite 实现的党费管理系统，支持党员自助缴费、两级管理员看板、微信支付（含 mock 模式），已开源。
-image: ''
-tags:
-    [
-        微信小程序,
-        Flask,
-        Python,
-        党费管理,
-        SQLite,
-    ]
+image: ""
+tags: [微信小程序, Flask, Python, 党费管理, SQLite]
 category: 项目
 draft: true
 ---
@@ -126,7 +119,7 @@ routes/
 小程序用原生开发，没有引入 UI 框架。`utils/api.js` 统一处理鉴权头、401 过期跳转和错误提示，各页面只需调用 `api.post / api.get`：
 
 ```javascript
-const res = await api.post('/admin/login', { username, password })
+const res = await api.post("/admin/login", { username, password });
 ```
 
 请求头里带了 `ngrok-skip-browser-warning: true`，跳过 ngrok 免费版在浏览器侧插入的提示页，真机调试不受影响。
@@ -137,12 +130,12 @@ const res = await api.post('/admin/login', { username, password })
 
 ### 环境要求
 
-| 工具 | 说明 |
-|------|------|
-| Python 3.10+ | 后端运行环境 |
-| 微信开发者工具 | 最新稳定版，用于小程序调试 |
-| 微信小程序 AppID | 在[微信公众平台](https://mp.weixin.qq.com) → 开发管理 → 开发设置中获取，个人测试号即可 |
-| [ngrok](https://ngrok.com/download) | 真机调试时做内网穿透（可选） |
+| 工具                                | 说明                                                                                   |
+| ----------------------------------- | -------------------------------------------------------------------------------------- |
+| Python 3.10+                        | 后端运行环境                                                                           |
+| 微信开发者工具                      | 最新稳定版，用于小程序调试                                                             |
+| 微信小程序 AppID                    | 在[微信公众平台](https://mp.weixin.qq.com) → 开发管理 → 开发设置中获取，个人测试号即可 |
+| [ngrok](https://ngrok.com/download) | 真机调试时做内网穿透（可选）                                                           |
 
 ### 后端
 
@@ -166,9 +159,9 @@ python app.py
 
 演示账号：
 
-| 账号 | 密码 | 角色 |
-|------|------|------|
-| admin | admin123 | 超级管理员 |
+| 账号     | 密码      | 角色                   |
+| -------- | --------- | ---------------------- |
+| admin    | admin123  | 超级管理员             |
 | branch01 | branch123 | 支部管理员（第一支部） |
 
 凭证推荐通过环境变量注入，避免写入代码：

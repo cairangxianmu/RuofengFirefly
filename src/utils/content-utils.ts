@@ -120,6 +120,16 @@ export async function getCategoryList(): Promise<Category[]> {
 	return ret;
 }
 
+export async function getPostsBySeries(seriesName: string): Promise<PostForList[]> {
+	const allPosts = await getCollection<"posts">("posts", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
+	return allPosts
+		.filter((post) => post.data.series === seriesName)
+		.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0))
+		.map((post) => ({ id: post.id, data: post.data }));
+}
+
 /**
  * 对标题进行分词，支持中英文混合
  * 使用 Intl.Segmenter 对中文分词，英文按空格分词

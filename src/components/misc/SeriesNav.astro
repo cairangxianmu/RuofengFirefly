@@ -1,0 +1,76 @@
+---
+import { Icon } from "astro-icon/components";
+import type { PostForList } from "@/utils/content-utils";
+import { getPostUrlBySlug } from "@/utils/url-utils";
+
+interface Props {
+	seriesName: string;
+	seriesPosts: PostForList[];
+	currentPostId: string;
+}
+
+const { seriesName, seriesPosts, currentPostId } = Astro.props;
+---
+
+<div class="card-base p-5 md:p-6 mb-6">
+  <div class="flex items-center gap-2 pb-3 mb-1 border-b border-dashed border-(--line-divider)">
+    <Icon name="material-symbols:menu-book-outline-rounded" class="text-xl text-(--primary)" />
+    <span class="text-base font-bold text-black/75 dark:text-white/75 transition">
+      {seriesName}
+    </span>
+    <span class="ml-auto text-xs px-2 py-0.5 rounded-full bg-(--btn-regular-bg) text-(--btn-content) transition">
+      系列文章 {seriesPosts.findIndex(p => p.id === currentPostId) + 1} / {seriesPosts.length}
+    </span>
+  </div>
+  {seriesPosts.map((post, idx) => {
+    const isCurrent = post.id === currentPostId;
+    return isCurrent ? (
+      <div class:list={[
+        "flex items-center gap-3 px-3 py-3 -mx-1 rounded-lg",
+        "bg-black/5 dark:bg-white/5",
+        idx < seriesPosts.length - 1 && "border-b border-dashed border-(--line-divider)",
+      ]}>
+        <div class="shrink-0 w-6 h-6 rounded-md bg-(--primary) text-white flex items-center justify-center text-sm font-bold transition">
+          {idx + 1}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-sm text-(--primary) truncate transition">
+            {post.data.title}
+          </div>
+          {post.data.description && (
+            <div class="text-xs text-black/30 dark:text-white/30 truncate transition mt-0.5">
+              {post.data.description}
+            </div>
+          )}
+        </div>
+      </div>
+    ) : (
+      <a
+        href={getPostUrlBySlug(post.id)}
+        class:list={[
+          "group flex items-center gap-3 px-3 py-3 -mx-1 rounded-lg",
+          "transition-all hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.98]",
+          idx < seriesPosts.length - 1 && "border-b border-dashed border-(--line-divider)",
+        ]}
+      >
+        <div class="shrink-0 w-6 h-6 rounded-md bg-(--enter-btn-bg) text-(--primary) flex items-center justify-center text-sm font-bold transition">
+          {idx + 1}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-sm text-black/75 dark:text-white/75 truncate transition group-hover:text-(--primary)">
+            {post.data.title}
+          </div>
+          {post.data.description && (
+            <div class="text-xs text-black/30 dark:text-white/30 truncate transition mt-0.5">
+              {post.data.description}
+            </div>
+          )}
+        </div>
+        <Icon
+          name="material-symbols:chevron-right-rounded"
+          class="shrink-0 text-xl text-black/15 dark:text-white/15 transition group-hover:text-(--primary) group-hover:translate-x-0.5"
+        />
+      </a>
+    );
+  })}
+</div>

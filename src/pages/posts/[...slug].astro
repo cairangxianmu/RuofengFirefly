@@ -9,7 +9,7 @@ import License from "@components/misc/License.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
-import { getRelatedPosts, getSortedPosts } from "@utils/content-utils";
+import { getPostsBySeries, getRelatedPosts, getSortedPosts } from "@utils/content-utils";
 import {
 	getFileDirFromPath,
 	getPostUrlBySlug,
@@ -21,6 +21,7 @@ import utc from "dayjs/plugin/utc";
 import CoverImage from "@/components/common/CoverImage.astro";
 import PostMetadata from "@/components/layout/PostMeta.astro";
 import RecommendedPost from "@/components/misc/RecommendedPost.astro";
+import SeriesNav from "@/components/misc/SeriesNav.astro";
 import SharePoster from "@/components/misc/SharePoster.svelte";
 import { coverImageConfig } from "@/config/coverImageConfig";
 import { licenseConfig } from "@/config/licenseConfig";
@@ -129,6 +130,7 @@ const jsonLd = {
 };
 
 const relatedPosts = await getRelatedPosts(entry, 5);
+const seriesPosts = entry.data.series ? await getPostsBySeries(entry.data.series) : [];
 ---
 
 <MainGridLayout
@@ -260,6 +262,9 @@ const relatedPosts = await getRelatedPosts(entry, 5);
 
       {entry.data.password ? (
         <EncryptedPost password={entry.data.password} slug={entry.id} hint={entry.data.passwordHint}>
+          {seriesPosts.length > 1 && entry.data.series && (
+            <SeriesNav seriesName={entry.data.series} seriesPosts={seriesPosts} currentPostId={entry.id} />
+          )}
           <Markdown class="mb-6 markdown-content onload-animation">
             <Content />
           </Markdown>
@@ -348,6 +353,9 @@ const relatedPosts = await getRelatedPosts(entry, 5);
         </EncryptedPost>
       ) : (
         <>
+          {seriesPosts.length > 1 && entry.data.series && (
+            <SeriesNav seriesName={entry.data.series} seriesPosts={seriesPosts} currentPostId={entry.id} />
+          )}
           <Markdown class="mb-6 markdown-content onload-animation">
             <Content />
           </Markdown>
