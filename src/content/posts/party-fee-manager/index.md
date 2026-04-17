@@ -5,7 +5,7 @@ description: 从"每次收党费都得挨个发消息追"到"党员自己打开�
 image: ""
 tags: [微信小程序, Flask, Python, 党费管理, SQLite]
 category: 项目
-draft: true
+draft: false
 ---
 
 > 从"每次收党费都得挨个发消息追"到"党员自己打开微信就缴了"，做了这个小工具，顺手开源出来。
