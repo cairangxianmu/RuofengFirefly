@@ -18,7 +18,7 @@ draft: false
 >
 > 💻 项目代码：[cairangxianmu/tibetan-hwr](https://github.com/cairangxianmu/tibetan-hwr)
 >
-> 🌐 Web 演示：（即将上线）
+> 🌐 Web 演示：[cairangxianmu-tibetan-hwr.hf.space](https://cairangxianmu-tibetan-hwr.hf.space)
 >
 > 📄 论文：[DOI 10.16229/j.cnki.issn1001-7542.2019.04.006](https://doi.org/10.16229/j.cnki.issn1001-7542.2019.04.006)
 
@@ -180,6 +180,14 @@ torch.save({
 
 ## 四、Web 在线演示
 
+<iframe
+  src="https://cairangxianmu-tibetan-hwr.hf.space"
+  width="100%"
+  height="700"
+  frameborder="0"
+  style="border-radius: 8px; border: 1px solid #e5e7eb;"
+></iframe>
+
 ### 4.1 后端：FastAPI + 懒加载
 
 三个路由就够了：
@@ -295,6 +303,7 @@ def _tight_crop(img_gray, pad_ratio=0.15):
 ```
 
 加入这一步后，识别率显著提升。**经验**：训练和推理的数据分布不一致，即使模型本身没问题也会表现得「模型很差」——定位这类问题比调模型本身更重要。手写画板和上传图片走同一条预处理路径，保证两种输入的表现一致。
+
 
 ## 五、快速上手
 

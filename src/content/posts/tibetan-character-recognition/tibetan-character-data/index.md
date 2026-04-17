@@ -24,7 +24,7 @@ draft: false
 >
 > 💻 项目代码：[cairangxianmu/tibetan-hwr](https://github.com/cairangxianmu/tibetan-hwr)
 >
-> 🌐 Web 演示：（即将上线）
+> 🌐 Web 演示：[cairangxianmu-tibetan-hwr.hf.space](https://cairangxianmu-tibetan-hwr.hf.space)
 >
 > 📄 论文：[DOI 10.16229/j.cnki.issn1001-7542.2019.04.006](https://doi.org/10.16229/j.cnki.issn1001-7542.2019.04.006)
 
