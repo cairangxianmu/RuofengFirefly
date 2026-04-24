@@ -28,6 +28,11 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 					url: "https://cairangxianmu-tibetan-hwr.hf.space",
 					external: true,
 				},
+				{
+					name: "四部医典知识库系统",
+					url: "http://gyushi.cairangxianmu.com/",
+					external: true,
+				},
 			],
 		},
 	];

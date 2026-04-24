@@ -5,7 +5,7 @@ export const commentConfig: CommentConfig = {
 	type: "waline",
 
 	//twikoo评论系统配置，版本1.7.4
-	twikoo: {
+	twikoo: {													
 		envId: "https://twikoo.vercel.app",
 		// 设置 Twikoo 评论系统语言
 		lang: "zh-CN",
