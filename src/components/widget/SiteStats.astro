@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { siteConfig } from "@/config";
+import { commentConfig } from "@/config/commentConfig";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import {
@@ -100,6 +101,10 @@ const stats = [
 		id: "last-update",
 	},
 ];
+
+// Waline 访问量统计配置
+const walineEnabled = commentConfig.type === "waline" && commentConfig.waline?.visitorCount;
+const walineServerURL = commentConfig.waline?.serverURL || "";
 ---
 
 <WidgetLayout name={i18n(I18nKey.siteStats)} id="site-stats" class={className} style={style}>
@@ -115,7 +120,7 @@ const stats = [
           </span>
         </div>
         <div class="flex items-center">
-          <span 
+          <span
             class="text-base font-bold text-neutral-900 dark:text-neutral-100"
             data-stat-id={stat.id}
           >
@@ -129,10 +134,30 @@ const stats = [
         </div>
       </div>
     ))}
+    {walineEnabled && (
+      <div class="flex items-center justify-between px-3 py-1.5">
+        <div class="flex items-center gap-2.5">
+          <div class="text-(--primary) text-xl">
+            <Icon name="material-symbols:bar-chart-rounded" />
+          </div>
+          <span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm">
+            {i18n(I18nKey.siteStatsTotalViews)}
+          </span>
+        </div>
+        <div class="flex items-center">
+          <span
+            class="text-base font-bold text-neutral-900 dark:text-neutral-100"
+            id="site-total-views"
+          >
+            {i18n(I18nKey.pageViewsLoading)}
+          </span>
+        </div>
+      </div>
+    )}
   </div>
 </WidgetLayout>
 
-<script is:inline define:vars={{ siteStartDate, lastPostDate, todayText }}>
+<script is:inline define:vars={{ siteStartDate, lastPostDate, todayText, walineEnabled, walineServerURL }}>
   function updateDynamicStats() {
     const today = new Date();
 
@@ -169,11 +194,33 @@ const stats = [
     }
   }
 
+  // 获取 Waline 总访问量
+  async function fetchWalineTotalViews() {
+    if (!walineEnabled || !walineServerURL) return;
+    const el = document.getElementById('site-total-views');
+    if (!el) return;
+    try {
+      const res = await fetch(`${walineServerURL}/api/article?type=list&pageSize=100`);
+      if (!res.ok) return;
+      const data = await res.json();
+      // data.data 是文章列表，每项有 time 字段（访问量）
+      const list = data?.data || [];
+      const total = list.reduce((sum, item) => sum + (item.time || 0), 0);
+      el.textContent = total.toLocaleString();
+    } catch (e) {
+      // 静默失败，保持加载中状态
+    }
+  }
+
   // 页面加载时更新
   updateDynamicStats();
+  fetchWalineTotalViews();
 
   // 页面切换时重新更新
   document.addEventListener("swup:contentReplaced", () => {
-    setTimeout(updateDynamicStats, 100);
+    setTimeout(() => {
+      updateDynamicStats();
+      fetchWalineTotalViews();
+    }, 100);
   });
 </script>
