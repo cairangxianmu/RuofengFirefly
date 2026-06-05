@@ -34,6 +34,7 @@ yarn.lock
 # docs
 Firefly-docs/
 
+.spec-workflow
 cache/
 package/
 .obsidian/

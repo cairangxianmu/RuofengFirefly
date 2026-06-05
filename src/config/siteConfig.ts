@@ -13,7 +13,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "Personal site",
 
 	// 站点 URL
-	site_url: "https://www.cairangxianmu.com",
+	site_url: "https://crxm.top",
 
 	// 站点描述
 	description:
